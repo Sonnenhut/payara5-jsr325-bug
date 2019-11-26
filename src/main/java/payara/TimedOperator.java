@@ -5,8 +5,9 @@ import javax.annotation.Resource;
 import javax.batch.operations.JobOperator;
 import javax.batch.runtime.BatchRuntime;
 import javax.ejb.*;
-import javax.inject.Inject;
+import javax.enterprise.concurrent.ManagedExecutorService;
 import java.util.Properties;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Starts a Job inside a timer.
@@ -18,8 +19,8 @@ public class TimedOperator {
     @Resource
     TimerService timers;
 
-    @Inject
-    AsyncOperator async;
+    @Resource
+    ManagedExecutorService executorService;
 
     @PostConstruct
     public void init() {
@@ -30,11 +31,15 @@ public class TimedOperator {
     @SuppressWarnings("unused")
     public void startInTimeout(Timer timer) {
         if(Boolean.parseBoolean(System.getenv("USE_WORKAROUND"))) {
-            async.startJob();
+            System.out.println("TimedOperator: starting job with executorService...");
+            CompletableFuture.runAsync(this::startJob, executorService);
         } else {
             System.out.println("TimedOperator: starting job...");
-            JobOperator operator = BatchRuntime.getJobOperator();
-            operator.start("TEST_JOB", new Properties());
         }
+    }
+
+    private void startJob() {
+        JobOperator operator = BatchRuntime.getJobOperator();
+        operator.start("TEST_JOB", new Properties());
     }
 }

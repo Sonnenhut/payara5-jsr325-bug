@@ -9,7 +9,9 @@ When you have Docker and linux, execute `chmod +x ./build.sh && ./build.sh`.
 
 #### Workaround
 
-Working around this issue seems to be to start the Job from within a `@Asynchronous` function.
+Working around this issue, I found two approaches.
+ - Starting the job inside an `@Asynchronous` function. -> this still gives a NPE 20% of the time
+ - Starting the job with the help of `ManagedExecutorService` -> now you have to handle transaction management on your own!
 Change `USE_WORKAROUND` in the `Dockerfile` to `true` to test it out.
 This is not really a workaround as this will only sometimes work. When it doesn't (~20% of the time) the job fails with a NullPointerException (see below). 
 
