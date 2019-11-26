@@ -23,7 +23,7 @@ public class TimedOperator {
 
     @PostConstruct
     public void init() {
-        timers.createTimer(0L, null);
+        timers.createTimer(0L,10_000L, null);
     }
 
     @Timeout

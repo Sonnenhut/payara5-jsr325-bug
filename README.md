@@ -11,6 +11,7 @@ When you have Docker and linux, execute `chmod +x ./build.sh && ./build.sh`.
 
 Working around this issue seems to be to start the Job from within a `@Asynchronous` function.
 Change `USE_WORKAROUND` in the `Dockerfile` to `true` to test it out.
+This is not really a workaround as this will only sometimes work. When it doesn't (~20% of the time) the job fails with a NullPointerException (see below). 
 
 
 #### Affected versions
