@@ -29,9 +29,10 @@ public class TimedOperator {
     @Timeout
     @SuppressWarnings("unused")
     public void startInTimeout(Timer timer) {
-        if(Boolean.getBoolean(System.getenv("USE_WORKAROUND"))) {
+        if(Boolean.parseBoolean(System.getenv("USE_WORKAROUND"))) {
             async.startJob();
         } else {
+            System.out.println("TimedOperator: starting job...");
             JobOperator operator = BatchRuntime.getJobOperator();
             operator.start("TEST_JOB", new Properties());
         }

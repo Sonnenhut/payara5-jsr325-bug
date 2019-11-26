@@ -14,6 +14,7 @@ public class AsyncOperator {
 
     @Asynchronous
     public void startJob() {
+        System.out.println("AsyncOperator: starting job...");
         JobOperator operator = BatchRuntime.getJobOperator();
         operator.start("TEST_JOB", new Properties());
     }
